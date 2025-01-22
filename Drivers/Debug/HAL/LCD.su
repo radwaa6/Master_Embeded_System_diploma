@@ -1,0 +1,9 @@
+LCD.c:28:6:LCD_En_Kick	8	static
+LCD.c:38:6:LCD_GOTO_XY	16	static
+LCD.c:56:6:LCD_Clear_Screen	8	static
+LCD.c:61:6:LCD_Is_Busy	16	static
+LCD.c:91:6:LCD_Init	16	static
+LCD.c:149:6:LCD_Write_Command	16	static
+LCD.c:180:6:LCD_Write_Char	16	static
+LCD.c:215:6:LCD_Write_String	24	static
+LCD.c:236:6:LCD_Custom_Character	8	static
