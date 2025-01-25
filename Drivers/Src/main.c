@@ -15,7 +15,7 @@
 #include "gps.h"
 #include "uart.h"
 #include "string.h"
-
+#include "stdio.h"
 void init_clk(void){
 	RCC_GPIOA_CLK_EN();
 	RCC_GPIOB_CLK_EN();
@@ -49,15 +49,16 @@ void UART_Print(USART_typedef* USARTx, const char* str) {
 
 int main(void)
 {
-    GPS_Init(USART1);
+	    GPS_Init(USART1);
 
-    while (1)
-    {
-        GPS_ReadData(USART1);
-        GPS_ParseData();
+	    while (1) {
+	        GPS_ReadData(USART1);
 
-        for (volatile int i = 0; i < 1000000; i++);
-    }
+	        printf("Latitude: %.6f, Longitude: %.6f, Speed: %.2f km/h\n",
+	               gps_data.latitude, gps_data.longitude, gps_data.speed);
+
+	        for (volatile int i = 0; i < 1000000; i++);
+	    }
 
 
 

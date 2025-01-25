@@ -1,29 +1,46 @@
-#include "uart.h"
 #include "gps.h"
+#include "string.h"
+#include <stdlib.h>
 
 #define GPS_BUFFER_SIZE  100
 
 char gps_buffer[GPS_BUFFER_SIZE];
 int gps_index = 0;
 
+GPS_Data gps_data;
+
 void GPS_ReadData(USART_typedef* USARTx) {
     uint16_t data;
 
     MCAL_UART_ReceiveData(USARTx, &data, Enable);
 
-    if (gps_index < GPS_BUFFER_SIZE) {
+    if (gps_index < GPS_BUFFER_SIZE - 1) {
         gps_buffer[gps_index++] = (char)data;
     }
 
-    if (gps_index >= GPS_BUFFER_SIZE) {
+    if (data == '\n' || gps_index >= GPS_BUFFER_SIZE - 1) {
+        gps_buffer[gps_index] = '\0';
+        GPS_ParseData();
         gps_index = 0;
     }
 }
 
 void GPS_ParseData(void) {
     if (strstr(gps_buffer, "$GPRMC") != NULL) {
-        char* latitude = strstr(gps_buffer, "Latitude: ");
-        char* longitude = strstr(gps_buffer, "Longitude: ");
+        char* token = strtok(gps_buffer, ",");
+        int index = 0;
+
+        while (token != NULL) {
+            if (index == 3) { // Latitude
+                gps_data.latitude = atof(token) / 100.0;
+            } else if (index == 5) { // Longitude
+                gps_data.longitude = atof(token) / 100.0;
+            } else if (index == 7) { // Speed
+                gps_data.speed = atof(token) * 1.852;
+            }
+            token = strtok(NULL, ",");
+            index++;
+        }
     }
 }
 

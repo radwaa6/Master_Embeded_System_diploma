@@ -13,5 +13,6 @@ void GPS_ReadData(USART_typedef* USARTx);
 void GPS_ParseData(void);
 void GPS_Init(USART_typedef* USARTx);
 
-#endif /* GPS_H_ */
+extern GPS_Data gps_data;
 
+#endif /* GPS_H_ */
