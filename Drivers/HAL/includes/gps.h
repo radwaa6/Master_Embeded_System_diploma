@@ -9,9 +9,9 @@ typedef struct {
     float speed;
 } GPS_Data;
 
-void GPS_ReadData(USART_typedef* USARTx);
+void GPS_ReadData(USART_TypeDef* USARTx);
 void GPS_ParseData(void);
-void GPS_Init(USART_typedef* USARTx);
+void GPS_Init(USART_TypeDef* USARTx);
 
 extern GPS_Data gps_data;
 

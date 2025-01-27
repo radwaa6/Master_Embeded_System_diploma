@@ -9,7 +9,9 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include Stm32_F103C6_Drivers/USART/subdir.mk
+-include Stm32_F103C6_Drivers/SPI_DRIVER/subdir.mk
 -include Stm32_F103C6_Drivers/Rcc/subdir.mk
+-include Stm32_F103C6_Drivers/I2C_DRIVER/subdir.mk
 -include Stm32_F103C6_Drivers/GPIO/subdir.mk
 -include Stm32_F103C6_Drivers/EXTI/subdir.mk
 -include Startup/subdir.mk

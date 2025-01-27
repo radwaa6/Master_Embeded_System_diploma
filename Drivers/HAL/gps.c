@@ -9,7 +9,7 @@ int gps_index = 0;
 
 GPS_Data gps_data;
 
-void GPS_ReadData(USART_typedef* USARTx) {
+void GPS_ReadData(USART_TypeDef* USARTx) {
     uint16_t data;
 
     MCAL_UART_ReceiveData(USARTx, &data, Enable);
@@ -44,7 +44,7 @@ void GPS_ParseData(void) {
     }
 }
 
-void GPS_Init(USART_typedef* USARTx) {
+void GPS_Init(USART_TypeDef* USARTx) {
     USART_Config gps_config;
     gps_config.USART_Mode = USART_MODE_RX;
     gps_config.Payload_Length = USART_8_DATA_Bits;

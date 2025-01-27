@@ -16,35 +16,7 @@
 #include "uart.h"
 #include "string.h"
 #include "stdio.h"
-void init_clk(void){
-	RCC_GPIOA_CLK_EN();
-	RCC_GPIOB_CLK_EN();
-	RCC_AFIO_CLK_EN();
 
-
-
-
-}
-
-
-
-
-unsigned char ch;
-void callback(void){
-
-	MCAL_UART_ReceiveData(USART1, &ch, Disable);
-	MCAL_UART_SendData(USART1, &ch, Enable);
-
-
-
-
-}
-void UART_Print(USART_typedef* USARTx, const char* str) {
-    while (*str) {
-        MCAL_UART_TransmitData(USARTx, (uint8_t)*str);
-        str++;
-    }
-}
 
 
 int main(void)

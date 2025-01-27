@@ -1,123 +1,157 @@
 /*
- * stm32_F103C6_gpio_driver.h
+ * stm32f103x8_gpio_driver.h
  *
- *  Created on: Feb 9, 2024
- *      Author: hassan
+ *  Created on: Oct 8, 2024
+ *      Author: Mohamed Abd El Hakeem El Said Ali
  */
 
-#ifndef INC_STM32_F103C6_GPIO_DRIVER_H_
-#define INC_STM32_F103C6_GPIO_DRIVER_H_
+#ifndef INC_STM32F103X6_GPIO_DRIVER_H_
+#define INC_STM32F103X6_GPIO_DRIVER_H_
 
+
+
+
+//-----------------------------
 //Includes
-
 #include "stm32f103x6.h"
-
-
-//Configuration Structure
-
-
-
-typedef struct{
-
-
-	uint16_t GPIO_PinNumber;  //this member Specifies which GPIO Pin to be configured.
-							  //This member must be set based on @ref GPIO_PINS_define
-
-
-	uint8_t GPIO_Pin_Config;	//This member specifies what configuration will be applied on the selected pin
-								//This member must be set based on @ref GPIO_CONFIG_define
-
-	uint8_t GPIO_Mode_config;	//This member configures the speed of the selected pin
-								//This member must be set based on @ref GPIO_MODE_define & when configuring the pin as an output
+//-----------------------------
 
 
 
+//GPIO  PIN States
+#define GPIO_PIN_SET        1
+#define GPIO_PIN_RESET      0
+
+
+//GPIO PIN_LOCK State
+#define GPIO_PIN_LOCK_ENABLED    1
+#define GPIO_PIN_LOCK_FAILED     0
+
+
+
+
+
+
+//-----------------------------
+//User type definitions (structures)
+typedef struct
+{
+
+	uint16_t GPIO_PinNumber ;     //Specifies the GPIO Pin_Number
+							     //This Parameter can be a value of @ref GPIO_PINS_Define
+
+	uint32_t GPIO_Mode;           //Specifies the operating mode for the selected pin
+							     //This Parameter can be a value of @ref GPIO_Mode_Define
+
+	uint32_t GPIO_Speed;   //Specifies the speed for the selected pin
+								 //This Parameter can be a value of @ref GPIO_Speed_Define
 }GPIO_PinConfig_t;
-
-
-//@ref GPIO_PINS_define
-
-#define GPIO_PINS_0			((uint16_t)0x0001)// Pin 1 selected
-#define GPIO_PINS_1			((uint16_t)0x0002)// Pin 2 selected
-#define GPIO_PINS_2			((uint16_t)0x0004)// Pin 3 selected
-#define GPIO_PINS_3			((uint16_t)0x0008)// Pin 4 selected
-#define GPIO_PINS_4			((uint16_t)0x0010)// Pin 5 selected
-#define GPIO_PINS_5			((uint16_t)0x0020)// Pin 6 selected
-#define GPIO_PINS_6			((uint16_t)0x0040)// Pin 7 selected
-#define GPIO_PINS_7			((uint16_t)0x0080)// Pin 8 selected
-#define GPIO_PINS_8			((uint16_t)0x0100)// Pin 9 selected
-#define GPIO_PINS_9			((uint16_t)0x0200)// Pin 10 selected
-#define GPIO_PINS_10		((uint16_t)0x0400)// Pin 11 selected
-#define GPIO_PINS_11		((uint16_t)0x0800)// Pin 12 selected
-#define GPIO_PINS_12		((uint16_t)0x1000)// Pin 13 selected
-#define GPIO_PINS_13		((uint16_t)0x2000)// Pin 14 selected
-#define GPIO_PINS_14		((uint16_t)0x4000)// Pin 15 selected
-#define GPIO_PINS_15		((uint16_t)0x8000)// Pin 16 selected
-#define	GPIO_PINS_ALL		((uint16_t)0xFFFF)// All pins selected
-
-#define GPIO_PIN_MASK		0x0000FFFFU	//PIN mask for assert test
+//-----------------------------
 
 
 
-//@ref GPIO_CONFIG_define
+//-----------------------------
+//Macros Configuration References
 
-#define GPIO_CONFIG_Analog									((uint8_t)0x00U) //0 For Analog mode
-#define GPIO_CONFIG_Floating_Input							((uint8_t)0x01U) //1 For Floating input (reset state)
-#define GPIO_CONFIG_Input_PU								((uint8_t)0x02U) //2 For Input with pull-up
-#define GPIO_CONFIG_Input_PD								((uint8_t)0x03U) //3 For Input with  pull-down
-#define GPIO_CONFIG_Output_PP 								((uint8_t)0x04U) //4 For General purpose output push-pull
-#define GPIO_CONFIG_Output_OD								((uint8_t)0x05U) //5 For General purpose output Open-drain
-#define GPIO_CONFIG_Alternate_Output_PP						((uint8_t)0x06U) //6 For Alternate function output Push-pull
-#define GPIO_CONFIG_Alternate_Output_OD						((uint8_t)0x07U) //7 For Alternate function output Open-drain*/
-#define GPIO_CONFIG_Alternate_Input							((uint8_t)0x08U) //8 For Alternate function INPUT
+/* @ref GPIO_PINS_Define */
+#define  GPIO_PIN_0       ((uint16_t) 0x0001)
+#define  GPIO_PIN_1       ((uint16_t) 0x0002)
+#define  GPIO_PIN_2       ((uint16_t) 0x0004)
+#define  GPIO_PIN_3       ((uint16_t) 0x0008)
+#define  GPIO_PIN_4       ((uint16_t) 0x0010)
+#define  GPIO_PIN_5       ((uint16_t) 0x0020)
+#define  GPIO_PIN_6       ((uint16_t) 0x0040)
+#define  GPIO_PIN_7       ((uint16_t) 0x0080)
+#define  GPIO_PIN_8       ((uint16_t) 0x0100)
+#define  GPIO_PIN_9       ((uint16_t) 0x0200)
+#define  GPIO_PIN_10      ((uint16_t) 0x0400)
+#define  GPIO_PIN_11      ((uint16_t) 0x0800)
+#define  GPIO_PIN_12      ((uint16_t) 0x1000)
+#define  GPIO_PIN_13      ((uint16_t) 0x2000)
+#define  GPIO_PIN_14      ((uint16_t) 0x4000)
+#define  GPIO_PIN_15      ((uint16_t) 0x8000)
+#define  GPIO_PIN_ALL     ((uint16_t) 0xFFFF)
 
-
-
-//@ref GPIO_MODE_define
-
-
-#define GPIO_MODE_Output_10MHz			((uint8_t)0x01U) 	//1 For 10MHz max speed
-#define GPIO_MODE_Output_2MHz			((uint8_t)0x02U) 	//2 For 2MHz  max speed
-#define GPIO_MODE_Output_50MHz			((uint8_t)0x03U)	//3 For 50MHz max speed
-
-
-
-
-
-
-//@ref GPIO_Pin_State
+//-----------------------------
 
 
-#define GPIO_PIN_SET 	(1U)
-#define GPIO_PIN_RESET	(0U)
 
-//@ref GPIO_RETURN_LOCK
+/*@ref GPIO_Mode_Define*/
+/* CNFy[1:0]
+>>>>>>>>>>>>>>>>>>>>>>>>In input mode:
+00: Analog mode
+01: Floating input (reset state)
+10: Input with pull-up / pull-down
+11: Reserved
+>>>>>>>>>>>>>>>>>>>>>>>In output mode:
+00: General purpose output push-pull
+01: General purpose output Open-drain
+10: Alternate function output Push-pull
+11: Alternate function output Open-drain
+*/
 
-#define GPIO_RETURN_LOCK_OK		1U
-#define GPIO_RETURN_LOCK_ERROR	0U
+
+#define GPIO_Mode_Inp_Analog               (0x00000000u)
+#define GPIO_Mode_Inp_Floating             (0x00000001u)
+#define GPIO_Mode_Inp_pull_up              (0x00000002u)
+#define GPIO_Mode_Inp_pull_down            (0x00000003u)
+#define GPIO_Mode_Inp_AF                   (0x00000001u)
+
+#define GPIO_Mode_Out_push_pull            (0x00000004u)
+#define GPIO_Mode_Out_Open_drain           (0x00000005u)
+#define GPIO_Mode_Out_AF_push_pull         (0x00000006u)
+#define GPIO_Mode_Out_AF_Open_drain        (0x00000007u)
+
+
+
+/*@ref GPIO_Speed_Define*/
+/*MODEy[1:0]: Port x mode bits (y= 0 .. 7), In Case Of Output Mode
+These bits are written by software to configure the corresponding I/O port
+00: Input mode (reset state)
+01: Output mode, max speed 10 MHz.
+10: Output mode, max speed 2 MHz.
+11: Output mode, max speed 50 MHz
+*/
+
+#define GPIO_Speed_Reset_State          (0x00000000u)  // you should set this define in case of Input_Mode
+#define GPIO_Speed_10MHz            	(0x00000001u)
+#define GPIO_Speed_2MHz             	(0x00000002u)
+#define GPIO_Speed_50MHz            	(0x00000003u)
+
+
+
 
 
 
 /*
- * =================================================================================
- *
- * 							APIs Supported by "MCAL GPIO DRIVER"
- *
- * =================================================================================
- *
+ * ===============================================
+ * APIs Supported by "MCAL GPIO DRIVER"
+ * ===============================================
  */
 
-void MCAL_GPIO_INIT (GPIO_typedef* GPIOx, GPIO_PinConfig_t* PinConfig);
-void MCAL_GPIO_DeInit (GPIO_typedef* GPIOx);
-//Read APIs
-uint8_t		MCAL_GPIO_ReadPin 	(GPIO_typedef* GPIOx, uint16_t PinNumber);
-uint16_t	MCAL_GPIO_ReadPort 	(GPIO_typedef* GPIOx);
+void MCAL_GPIO_Enable_ClocK(GPIO_TypedDef* GPIOx);
 
-//Write APIs
-void		MCAL_GPIO_WritePin 	(GPIO_typedef* GPIOx, uint16_t PinNumber, uint8_t value);
-void		MCAL_GPIO_WritePort (GPIO_typedef* GPIOx, uint16_t value);
-void		MCAL_GPIO_TogglePin	(GPIO_typedef* GPIOx, uint16_t PinNumber);
-uint8_t		MCAL_GPIO_LockPin   (GPIO_typedef* GPIOx, uint16_t PinNumber);
+void MCAL_GPIO_Init(GPIO_TypedDef* GPIOx, GPIO_PinConfig_t* PinConfig );
+void MCAL_GPIO_DInit(GPIO_TypedDef* GPIOx);
+
+uint8_t  MCAL_GPIO_ReadPin(GPIO_TypedDef* GPIOx,uint16_t PinNumber );
+uint16_t MCAL_GPIO_ReadPort(GPIO_TypedDef* GPIOx);
 
 
-#endif /* INC_STM32_F103C6_GPIO_DRIVER_H_ */
+void MCAL_GPIO_WritePin(GPIO_TypedDef* GPIOx,uint16_t PinNumber , uint8_t Value);
+void MCAL_GPIO_WritePort(GPIO_TypedDef* GPIOx, uint16_t Value);
+
+
+void MCAL_GPIO_TogglePin(GPIO_TypedDef* GPIOx,uint16_t PinNumber);
+
+uint8_t MCAL_GPIO_LockPin(GPIO_TypedDef* GPIOx,uint16_t PinNumber);
+
+
+
+
+
+
+
+
+
+#endif /* INC_STM32F103X6_GPIO_DRIVER_H_ */

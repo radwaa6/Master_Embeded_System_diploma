@@ -141,12 +141,12 @@ enum Polling_mechanism
 //=====================================================
 
 
-void MCAL_UART_Init (USART_typedef* USARTx, USART_Config* UART_Config);
-void MCAL_UART_DeInit (USART_typedef* USARTx);
-void MCAL_UART_SendData (USART_typedef* USARTx, uint16_t*pTxBuffer,enum Polling_mechanism PollingEnable);
-void MCAL_UART_ReceiveData (USART_typedef* USARTx, uint16_t*RTxBuffer,enum Polling_mechanism PollingEnable);
-void MCAL_UART_GPIO_Set_Pins (USART_typedef* USARTx);
-void MCAL_UART_Wait_TC (USART_typedef* USARTx);
+void MCAL_UART_Init (USART_TypeDef* USARTx, USART_Config* UART_Config);
+void MCAL_UART_DeInit (USART_TypeDef* USARTx);
+void MCAL_UART_SendData (USART_TypeDef* USARTx, uint16_t*pTxBuffer,enum Polling_mechanism PollingEnable);
+void MCAL_UART_ReceiveData (USART_TypeDef* USARTx, uint16_t*RTxBuffer,enum Polling_mechanism PollingEnable);
+void MCAL_UART_GPIO_Set_Pins (USART_TypeDef* USARTx);
+void MCAL_UART_Wait_TC (USART_TypeDef* USARTx);
 
 
 
